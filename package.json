@@ -1,0 +1,18 @@
+{
+  "name": "warm-cache-lambda",
+  "version": "0.0.0",
+  "description": "Trigger to warm gateway cache on complete CAR file write",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nftstorage/warm-cache-lambda.git"
+  },
+  "author": "Vasco Santos <santos.vasco10@gmail.com>",
+  "license": "(Apache-2.0 OR MIT)",
+  "bugs": {
+    "url": "https://github.com/nftstorage/warm-cache-lambda/issues"
+  },
+  "homepage": "https://github.com/nftstorage/warm-cache-lambda#readme"
+}
