@@ -3,7 +3,15 @@
   "version": "0.0.0",
   "description": "Trigger to warm gateway cache on complete CAR file write",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier -w src",
+    "build": "bash scripts/build.sh",
+    "init": "npm run build && DEBUG=warm-cache:* node scripts/bin.js init",
+    "test": "npm-run-all -p -r mock:nftstorage.link test:lambda",
+    "test:lambda": "ava test/*.node.js",
+    "mock:nftstorage.link": "smoke -p 9081 test/mocks/nftstorage.link",
+    "deploy": "aws lambda update-function-code --cli-connect-timeout 15000 --region $AWS_REGION --function-name $LAMBDA --zip-file fileb://dist/lambda.zip",
+    "deploy-l": "aws lambda update-function-code --cli-connect-timeout 15000 --region us-east-2 --function-name dotstorage-warm-cache --zip-file fileb://dist/lambda.zip",
+    "invoke": "aws lambda invoke --cli-binary-format raw-in-base64-out --region $AWS_REGION --function-name $LAMBDA --payload file://event.json --log-type Tail /dev/null | jq -r .LogResult | base64 -d"
   },
   "repository": {
     "type": "git",
@@ -11,6 +19,28 @@
   },
   "author": "Vasco Santos <santos.vasco10@gmail.com>",
   "license": "(Apache-2.0 OR MIT)",
+  "dependencies": {
+    "aws-sdk": "^2.1084.0",
+    "pino": "^7.6.2"
+  },
+  "devDependencies": {
+    "ava": "^3.15.0",
+    "aws-sdk-mock": "^5.5.0",
+    "debug": "^4.3.3",
+    "dotenv": "^10.0.0",
+    "node-fetch": "^2.6.6",
+    "npm-run-all": "^4.1.5",
+    "pino-pretty": "^7.3.0",
+    "prettier": "^2.4.1",
+    "sade": "^1.8.1",
+    "smoke": "^3.1.1"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  },
   "bugs": {
     "url": "https://github.com/nftstorage/warm-cache-lambda/issues"
   },
